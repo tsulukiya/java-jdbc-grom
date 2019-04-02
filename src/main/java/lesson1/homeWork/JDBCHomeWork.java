@@ -1,8 +1,8 @@
+package lesson1.homeWork;
 
 import java.sql.*;
 
-public class JDBCFirstStep {
-
+public class JDBCHomeWork {
     private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
     private static final String DB_URL = "jdbc:oracle:thin:@gromcode-lessons.clg2f8ljlc7q.us-east-2.rds.amazonaws.com:1521:ORCL";
 
