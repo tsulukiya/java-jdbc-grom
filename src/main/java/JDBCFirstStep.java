@@ -12,13 +12,8 @@ public class JDBCFirstStep {
     public static void main(String[] args) {
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS); Statement statement = connection.createStatement()) {
-//
-            try {
-                Class.forName(JDBC_DRIVER);
-            } catch (ClassNotFoundException e) {
-                System.out.println("Class " + JDBC_DRIVER + " not found");
-                return;
-            }
+
+            Class.forName(JDBC_DRIVER);
 
             try (ResultSet resultSet = statement.executeQuery("SELECT * FROM CUSTOMER")) {
                 while (resultSet.next()) {
@@ -26,12 +21,8 @@ public class JDBCFirstStep {
                 }
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println("Something went wrong");
-            e.printStackTrace();
         }
-
     }
-
-
 }
