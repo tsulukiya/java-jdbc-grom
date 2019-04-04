@@ -1,4 +1,4 @@
-package lesson3;
+package lesson3.classWork;
 
 import java.sql.*;
 import java.util.ArrayList;

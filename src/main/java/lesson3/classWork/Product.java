@@ -1,4 +1,4 @@
-package lesson3;
+package lesson3.classWork;
 
 public class Product {
     private long id;
