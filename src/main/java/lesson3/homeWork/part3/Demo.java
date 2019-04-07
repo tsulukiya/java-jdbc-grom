@@ -2,7 +2,7 @@ package lesson3.homeWork.part3;
 
 public class Demo {
     public static void main(String[] args) {
-        TestSpeedDb testSpeedDb = new TestSpeedDb();
+        Solution testSpeedDb = new Solution();
 
         //method testSavePerformance() speed - 136463 ms;
         //System.out.println(testSpeedDb.testSavePerformance());
