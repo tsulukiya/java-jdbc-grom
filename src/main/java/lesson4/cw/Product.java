@@ -1,4 +1,4 @@
-package lesson4;
+package lesson4.cw;
 
 public class Product {
     private long id;

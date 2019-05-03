@@ -1,4 +1,6 @@
-package lesson4;
+package lesson4.cw;
+
+import lesson4.cw.Product;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -35,7 +37,7 @@ public class TransactionDemo {
     }
 
     private static void saveList(List<Product> products, Connection connection) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("INSER INTO PRODUCT VALUES (?, ?, ?, ?)")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO PRODUCT VALUES (?, ?, ?, ?)")) {
 
             connection.setAutoCommit(true);
 
