@@ -15,19 +15,24 @@ public abstract class ShareRepository<T> {
     private static final String PASS = "TsulukiyA_123";
 
 
-    public T insertObjectToDb(T t, String sql) {
+    public T insertObjectToDb(T t) {
 
-            try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement =
+                connection.prepareStatement(sqlQueryInsertToDb())) {
 
-                connection.setAutoCommit(true);
+            connection.setAutoCommit(true);
 
-                initStatement(preparedStatement, t);
+            initStatement(preparedStatement, t);
 
-            } catch (SQLException e) {
+        } catch (SQLException e) {
 
-                e.printStackTrace();
-            }
+            e.printStackTrace();
+        }
         return t;
+    }
+
+    private String sqlQueryInsertToDb() {
+        return "INSERT INTO STORAGE VALUES (?, ?, ?, ?)";
     }
 
     abstract void initStatement(PreparedStatement preparedStatement, T t);

@@ -26,8 +26,7 @@ public class StorageRepository extends ShareRepository {
     }
 
     public Storage save(Storage storage) {
-        String sql = "INSERT INTO STORAGE VALUES (?, ?, ?, ?)";
-        insertObjectToDb(storage, sql);
+        insertObjectToDb(storage);
         return storage;
     }
 
