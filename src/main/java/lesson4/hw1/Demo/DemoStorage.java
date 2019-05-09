@@ -9,13 +9,13 @@ public class DemoStorage {
         Storage storage1 = new Storage(1002, "jpg,png", "Ukraine", 22002);
         StorageController storageController = new StorageController();
 
-        //storageController.save(storage);
+        storageController.save(storage1);
 
         //storageController.delete(1004);
 
         //storageController.update(storage1);
 
-        System.out.println(storageController.findById(1002));
+        //System.out.println(storageController.findById(1002));
     }
 
 }

@@ -13,6 +13,10 @@ public class Storage {
         this.storageMaxSize = storageMaxSize;
     }
 
+    public Storage(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }

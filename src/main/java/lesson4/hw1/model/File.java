@@ -59,4 +59,15 @@ public class File {
         result = 31 * result + name.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", format='" + format + '\'' +
+                ", size=" + size +
+                ", storage=" + storage +
+                '}';
+    }
 }
