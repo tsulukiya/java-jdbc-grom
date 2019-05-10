@@ -32,4 +32,14 @@ public class Storage {
     public long getStorageMaxSize() {
         return storageMaxSize;
     }
+
+    @Override
+    public String toString() {
+        return "Storage{" +
+                "id=" + id +
+                ", formatsSupported='" + formatsSupported + '\'' +
+                ", storageCountry='" + storageCountry + '\'' +
+                ", storageMaxSize=" + storageMaxSize +
+                '}';
+    }
 }
