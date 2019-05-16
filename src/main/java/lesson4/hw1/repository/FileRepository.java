@@ -7,26 +7,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileRepository extends ShareRepository {
 
 
     public File put(Storage storage, File file) {
-        try (Connection connection = getConnection(); PreparedStatement preparedStatement =
-                connection.prepareStatement("UPDATE FILE_S SET STORAGE=? WHERE ID = ?")) {
+        try (Connection connection = getConnection()) {
 
-            connection.setAutoCommit(false);
-
-            checkStorageSize(storage, file.getSize(), connection);
-
-            preparedStatement.setLong(1, storage.getId());
-            preparedStatement.setLong(2, file.getId());
-
-            int res = preparedStatement.executeUpdate();
-            connection.commit();
-
-            System.out.println("File with ID = " + file.getId() + " was  add to storage with result " + res);
+            checkStorageFormatSupported(storage, file, connection);
+            addFileToStorage(storage, file, connection);
 
             return file;
         } catch (SQLException e) {
@@ -39,7 +30,9 @@ public class FileRepository extends ShareRepository {
 
     public List<File> putAll(Storage storage, List<File> files) {
         try (Connection connection = getConnection()) {
-
+            for (File file : files) {
+                checkStorageFormatSupported(storage, file, connection);
+            }
             addListToStorage(storage, files, connection);
 
             return files;
@@ -71,16 +64,104 @@ public class FileRepository extends ShareRepository {
         }
     }
 
+    private void addFileToStorage(Storage storage, File file, Connection connection) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE FILE_S SET STORAGE=? WHERE ID = ?")) {
+
+            connection.setAutoCommit(false);
+
+
+            checkStorageSize(storage, file.getSize(), connection);
+
+            preparedStatement.setLong(1, storage.getId());
+            preparedStatement.setLong(2, file.getId());
+
+            int res = preparedStatement.executeUpdate();
+
+            System.out.println("File with ID = " + file.getId() + " was  add to storage with result " + res);
+
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        }
+    }
+
+    private List<File> extractFileFromStorage(Storage storageFrom, Storage storageTo, Connection connection) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM FILE_S WHERE STORAGE=?")) {
+            preparedStatement.setLong(1, storageFrom.getId());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<File> fileList = new ArrayList<>();
+
+            while (resultSet.next()) {
+                fileList.add(new File(resultSet.getLong(1), resultSet.getString(2),
+                        resultSet.getString(3), resultSet.getLong(4), new Storage(storageTo.getId())));
+                System.out.println(fileList);
+            }
+
+
+            return fileList;
+        } catch (SQLException e) {
+            System.err.println("Method extractFileFromStorage is wrong");
+        }
+        return null;
+    }
+
 
     public File delete(Storage storage, File file) {
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement =
+                connection.prepareStatement("UPDATE FILE_S SET STORAGE = NULL WHERE ID=?")) {
+            preparedStatement.setLong(1, file.getId());
+            int res = preparedStatement.executeUpdate();
+            System.out.println("File with ID= " + file.getId() + "delete from Storage with ID = " + storage.getId() +
+                    "with result = " + res);
+
+        } catch (SQLException e) {
+            System.err.println("Method delete file from storage is wrong...");
+
+        }
         return null;
     }
 
     public List<File> transferAll(Storage storageFrom, Storage storageTo) {
+        try (Connection connection = getConnection()) {
+            List<File> fileList = extractFileFromStorage(storageFrom, storageTo, connection);
+            transactionUpdate(connection, fileList, storageTo);
+        } catch (SQLException e) {
+            System.err.println("Something went wrong");
+            e.printStackTrace();
+        }
         return null;
     }
 
+    private void transactionUpdate(Connection connection, List<File> fileList, Storage storageTo) throws SQLException {
+        try {
+            connection.setAutoCommit(false);
+            for (File file : fileList) {
+                checkStorageFormatSupported(storageTo, file, connection);
+                checkStorageSize(storageTo, file.getSize(), connection);
+                update(file);
+            }
+            connection.commit();
+        } catch (SQLException e) {
+            System.out.println("Transaction rollback");
+            connection.rollback();
+            throw e;
+        }
+    }
+
+
     public File transferFile(Storage storageFrom, Storage storageTo, long id) {
+        try (Connection connection = getConnection()) {
+            File file = findById(id);
+            File file2 = new File(file.getId(), file.getName(), file.getFormat(), file.getSize(), new Storage(storageTo.getId()));
+            update(file2);
+            return file2;
+        } catch (SQLException e) {
+            System.err.println("Something went wrong");
+            e.printStackTrace();
+        }
         return null;
     }
 
