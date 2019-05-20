@@ -1,6 +1,6 @@
 package lesson5.task2;
 
-import lesson5.HibernateUtils;
+
 import org.hibernate.Session;
 
 public class ProductRepository {
