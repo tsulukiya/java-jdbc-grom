@@ -63,7 +63,7 @@ public class DemoFile {
         //fileController.putAll(storage, files);
         //fileController.delete(storage, file6);
 
-        //fileController.transferAll(storage3,storage);
+        fileController.transferAll(storage,storage3);
         //fileController.transferFile(storage,storage3, 5012);
     }
 }

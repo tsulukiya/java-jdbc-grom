@@ -1,4 +1,4 @@
-package hibernate.lesson1;
+package hibernate.lesson1.task1;
 
 import org.hibernate.Session;
 
@@ -9,8 +9,8 @@ public class Demo {
         session.getTransaction().begin();
 
         Product product = new Product();
-        product.setId(99);
-        product.setName("table");
+        product.setId(9999);
+        product.setName("table www");
         product.setDescription("grey & blue");
         product.setPrice(70);
 

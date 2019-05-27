@@ -126,8 +126,15 @@ public class FileRepository extends ShareRepository {
 
     public List<File> transferAll(Storage storageFrom, Storage storageTo) {
         try (Connection connection = getConnection()) {
-            List<File> fileList = extractFileFromStorage(storageFrom, storageTo, connection);
-            transactionUpdate(connection, fileList, storageTo);
+            try {
+                connection.setAutoCommit(true);
+                List<File> fileList = extractFileFromStorage(storageFrom, storageTo, connection);
+                transactionUpdate(connection, fileList, storageTo);
+                connection.commit();
+            } catch (SQLException e) {
+                System.out.println("Transaction rollback");
+                connection.rollback();
+            }
         } catch (SQLException e) {
             System.err.println("Something went wrong");
             e.printStackTrace();
@@ -137,17 +144,33 @@ public class FileRepository extends ShareRepository {
 
     private void transactionUpdate(Connection connection, List<File> fileList, Storage storageTo) throws SQLException {
         try {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE FILE_S SET ID=?, NAME=?," +
+                    " FORMAT=?, SIZE_FILE=?, STORAGE=? WHERE ID = ?");
             connection.setAutoCommit(false);
             for (File file : fileList) {
                 checkStorageFormatSupported(storageTo, file, connection);
                 checkStorageSize(storageTo, file.getSize(), connection);
-                update(file);
+                preparedStatement.setLong(1, file.getId());
+                preparedStatement.setString(2, file.getName());
+                preparedStatement.setString(3, file.getFormat());
+                preparedStatement.setLong(4, file.getSize());
+                if (file.getStorage() != null) {
+                    preparedStatement.setLong(5, file.getStorage().getId());
+                } else {
+                    preparedStatement.setObject(5, file.getStorage());
+                }
+                preparedStatement.setLong(6, file.getId());
+
+                int res = preparedStatement.executeUpdate();
+
+                System.out.println("update File with ID = " + file.getId() + " was finished with result " + res);
+
             }
             connection.commit();
+
         } catch (SQLException e) {
-            System.out.println("Transaction rollback");
+            System.out.println("Action is failed... method TRANSACTION UPDATE");
             connection.rollback();
-            throw e;
         }
     }
 

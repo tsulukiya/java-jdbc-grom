@@ -1,4 +1,4 @@
-package hibernate.lesson1;
+package hibernate.lesson1.task1;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
