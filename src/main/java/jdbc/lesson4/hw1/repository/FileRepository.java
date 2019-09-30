@@ -34,7 +34,7 @@ public class FileRepository extends ShareRepository {
                 checkStorageFormatSupported(storage, file, connection);
             }
             addListToStorage(storage, files, connection);
-
+            
             return files;
         } catch (SQLException e) {
             System.err.println("Something went wrong");
@@ -124,20 +124,16 @@ public class FileRepository extends ShareRepository {
         return null;
     }
 
-    public List<File> transferAll(Storage storageFrom, Storage storageTo) {
+    public List<File> transferAll(Storage storageFrom, Storage storageTo) throws SQLException {
         try (Connection connection = getConnection()) {
-            try {
-                connection.setAutoCommit(true);
-                List<File> fileList = extractFileFromStorage(storageFrom, storageTo, connection);
-                transactionUpdate(connection, fileList, storageTo);
-                connection.commit();
-            } catch (SQLException e) {
-                System.out.println("Transaction rollback");
-                connection.rollback();
-            }
+            connection.setAutoCommit(true);
+            List<File> fileList = extractFileFromStorage(storageFrom, storageTo, connection);
+            transactionUpdate(connection, fileList, storageTo);
+            connection.commit();
         } catch (SQLException e) {
             System.err.println("Something went wrong");
             e.printStackTrace();
+            throw e;
         }
         return null;
     }

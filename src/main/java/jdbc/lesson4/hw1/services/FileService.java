@@ -27,7 +27,7 @@ public class FileService {
         return fileRepository.delete(storage, file);
     }
 
-    public List<File> transferAll(Storage storageFrom, Storage storageTo) {
+    public List<File> transferAll(Storage storageFrom, Storage storageTo) throws SQLException {
         return fileRepository.transferAll(storageFrom, storageTo);
     }
 

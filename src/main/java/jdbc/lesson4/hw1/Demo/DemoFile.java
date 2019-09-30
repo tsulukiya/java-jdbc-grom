@@ -4,6 +4,7 @@ import jdbc.lesson4.hw1.controller.FileController;
 import jdbc.lesson4.hw1.model.File;
 import jdbc.lesson4.hw1.model.Storage;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +63,11 @@ public class DemoFile {
         //fileController.put(storage1, file9);
         //fileController.putAll(storage, files);
         //fileController.delete(storage, file6);
-
-        fileController.transferAll(storage,storage3);
+        try {
+            fileController.transferAll(storage, storage3);
+        } catch (SQLException e) {
+            e.getMessage();
+        }
         //fileController.transferFile(storage,storage3, 5012);
     }
 }

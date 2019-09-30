@@ -67,7 +67,7 @@ public class StorageRepository extends ShareRepository {
             System.err.println("Something went wrong");
             e.printStackTrace();
         }
-        return null;
+        return storage;
     }
 
     public Storage findById(long id) {

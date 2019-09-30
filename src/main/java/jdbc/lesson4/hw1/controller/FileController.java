@@ -4,6 +4,7 @@ import jdbc.lesson4.hw1.model.File;
 import jdbc.lesson4.hw1.model.Storage;
 import jdbc.lesson4.hw1.services.FileService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class FileController {
@@ -21,7 +22,7 @@ public class FileController {
         return fileService.delete(storage, file);
     }
 
-    public List<File> transferAll(Storage storageFrom, Storage storageTo) {
+    public List<File> transferAll(Storage storageFrom, Storage storageTo) throws SQLException {
         return fileService.transferAll(storageFrom, storageTo);
     }
 
