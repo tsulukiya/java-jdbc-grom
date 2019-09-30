@@ -1,6 +1,6 @@
 package hibernate.lesson2;
 
-import hibernate.lesson1.task2.Product;
+import hibernate.lesson1.task1.Product;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
