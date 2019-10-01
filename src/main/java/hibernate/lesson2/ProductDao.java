@@ -15,11 +15,12 @@ public class ProductDao {
 
     public static void main(String[] args) {
         Product product = new Product();
+        product.setId(1);
         product.setName("table new!");
         product.setDescription("grey & blue");
         product.setPrice(70);
 
-        save(product);
+        //save(product);
 
         Product product1 = new Product();
         product1.setName("table new111!");
@@ -37,7 +38,11 @@ public class ProductDao {
         product3.setPrice(90);
 
         List<Product> products = Arrays.asList(product1, product2, product3);
-        saveProducts(products);
+        //saveAll(products);
+        //update(product);
+        //delete(product);
+        deleteAll(products);
+        updateAll(products);
 
     }
 
@@ -62,7 +67,50 @@ public class ProductDao {
         }
     }
 
-    public static void saveProducts(List<Product> products) {
+    public static void update(Product product) {
+        Session session = null;
+        Transaction tr = null;
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+            session.update(product);
+            tr.commit();
+            System.out.println("Update is done");
+        } catch (HibernateException e) {
+            System.err.println("Save is failed");
+            System.err.println(e.getMessage());
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    public static void delete(Product product) {
+        Session session = null;
+        Transaction tr = null;
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+            session.delete(product);
+            tr.commit();
+        } catch (HibernateException e) {
+            System.err.println("Save is failed");
+            System.err.println(e.getMessage());
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    public static void saveAll(List<Product> products) {
         Session session = null;
         Transaction tr = null;
         try {
@@ -72,6 +120,56 @@ public class ProductDao {
 
             for (Product product : products) {
                 session.save(product);
+            }
+
+            tr.commit();
+        } catch (HibernateException e) {
+            System.err.println("Save is failed");
+            System.err.println(e.getMessage());
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    public static void updateAll(List<Product> products) {
+        Session session = null;
+        Transaction tr = null;
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+
+            for (Product product : products) {
+                session.update(product);
+            }
+
+            tr.commit();
+        } catch (HibernateException e) {
+            System.err.println("Save is failed");
+            System.err.println(e.getMessage());
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    public static void deleteAll(List<Product> products) {
+        Session session = null;
+        Transaction tr = null;
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+
+            for (Product product : products) {
+                session.delete(product);
             }
 
             tr.commit();
