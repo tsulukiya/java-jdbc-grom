@@ -1,4 +1,4 @@
-package hibernate.lesson2;
+package hibernate.lesson2.task2;
 
 import javax.persistence.*;
 
