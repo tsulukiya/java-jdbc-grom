@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,17 +24,17 @@ public class ProductDao {
         //save(product);
 
         Product product1 = new Product();
-        product1.setName("table new111!");
+        product1.setName("atable new111!");
         product1.setDescription("grey & blue");
         product1.setPrice(70);
 
         Product product2 = new Product();
-        product2.setName("table new222!");
+        product2.setName("abtable new222!");
         product2.setDescription("grey & blue");
         product2.setPrice(80);
 
         Product product3 = new Product();
-        product3.setName("table new333!");
+        product3.setName("aatable new333!");
         product3.setDescription("grey & blue");
         product3.setPrice(90);
 
@@ -41,8 +42,15 @@ public class ProductDao {
         //saveAll(products);
         //update(product);
         //delete(product);
-        deleteAll(products);
-        updateAll(products);
+        //deleteAll(products);
+        //updateAll(products);
+        //System.out.println(findById(3));
+        //System.out.println(findByName("test"));
+        //System.out.println(findByContainedName("oy"));
+        //System.out.println(findByPrice(100, 20));
+        //System.out.println(findByNameSortedAsc("table"));
+        //System.out.println(findByNameSortedDesc());
+        //System.out.println(findByPriceSortedDesc(100, 20));
 
     }
 
@@ -192,4 +200,147 @@ public class ProductDao {
         return sessionFactory;
     }
 
+    public static List<Product> findById(long id) {
+        Session session = null;
+        List<Product> products = null;
+        try {
+            session = createSessionFactory().openSession();
+            Query query = session.createQuery("from Product where id = :code");
+            query.setParameter("code", id);
+            products = query.list();
+
+        } catch (HibernateException e) {
+            System.err.println("FindById is failed");
+            System.err.println(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return products;
+    }
+
+    public static List<Product> findByName(String name) {
+        Session session = null;
+        List<Product> products = null;
+        try {
+            session = createSessionFactory().openSession();
+            Query query = session.createQuery("from Product where name = :code");
+            query.setParameter("code", name);
+            products = query.list();
+
+        } catch (HibernateException e) {
+            System.err.println("FindById is failed");
+            System.err.println(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return products;
+    }
+
+    public static List<Product> findByContainedName(String name) {
+        Session session = null;
+        List<Product> products = null;
+        try {
+            session = createSessionFactory().openSession();
+            Query query = session.createQuery("from Product where name like :code");
+            query.setParameter("code", "%" + name + "%");
+            products = query.list();
+
+        } catch (HibernateException e) {
+            System.err.println("FindById is failed");
+            System.err.println(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return products;
+    }
+
+    public static List<Product> findByPrice(int price, int delta) {
+        Session session = null;
+        List<Product> products = null;
+        try {
+            session = createSessionFactory().openSession();
+            Query query = session.createQuery("from Product where price between :priceMin and :priceMax");
+            query.setParameter("priceMin", price - delta);
+            query.setParameter("priceMax", price + delta);
+            products = query.list();
+
+        } catch (HibernateException e) {
+            System.err.println("FindById is failed");
+            System.err.println(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return products;
+    }
+
+    public static List<Product> findByNameSortedAsc(String name) {
+        Session session = null;
+        List<Product> products = null;
+        try {
+            session = createSessionFactory().openSession();
+            Query query = session.createQuery("from Product where name = :code order by name asc");
+            query.setParameter("code", name);
+
+            products = query.list();
+
+        } catch (HibernateException e) {
+            System.err.println("FindById is failed");
+            System.err.println(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return products;
+    }
+
+    public static List<Product> findByNameSortedDesc() {
+        Session session = null;
+        List<Product> products = null;
+        try {
+            session = createSessionFactory().openSession();
+            Query query = session.createQuery("from Product order by name desc");
+
+            products = query.list();
+
+        } catch (HibernateException e) {
+            System.err.println("FindById is failed");
+            System.err.println(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return products;
+
+    }
+
+    public static List<Product> findByPriceSortedDesc(int price, int delta) {
+        Session session = null;
+        List<Product> products = null;
+        try {
+            session = createSessionFactory().openSession();
+            Query query = session.createQuery("from Product where price between :priceMin and :priceMax order by price desc");
+            query.setParameter("priceMin", price - delta);
+            query.setParameter("priceMax", price + delta);
+            products = query.list();
+
+        } catch (HibernateException e) {
+            System.err.println("FindById is failed");
+            System.err.println(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return products;
+    }
 }
