@@ -7,7 +7,6 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class ProductDao {
@@ -25,15 +24,21 @@ public class ProductDao {
     public static List<Product> findById(long id) {
         Session session = null;
         List<Product> products = null;
+        Transaction tr = null;
         try {
             session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
             Query query = session.createQuery("from Product where id = :code");
             query.setParameter("code", id);
             products = query.list();
+            tr.commit();
 
         } catch (HibernateException e) {
+            tr.rollback();
             System.err.println("FindById is failed");
             System.err.println(e.getMessage());
+
         } finally {
             if (session != null) {
                 session.close();
@@ -45,13 +50,18 @@ public class ProductDao {
     public static List<Product> findByName(String name) {
         Session session = null;
         List<Product> products = null;
+        Transaction tr = null;
         try {
             session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
             Query query = session.createQuery("from Product where name = :code");
             query.setParameter("code", name);
             products = query.list();
+            tr.commit();
 
         } catch (HibernateException e) {
+            tr.rollback();
             System.err.println("FindById is failed");
             System.err.println(e.getMessage());
         } finally {
@@ -65,13 +75,20 @@ public class ProductDao {
     public static List<Product> findByContainedName(String name) {
         Session session = null;
         List<Product> products = null;
+        Transaction tr = null;
         try {
             session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
             Query query = session.createQuery("from Product where name like :code");
             query.setParameter("code", "%" + name + "%");
             products = query.list();
+            tr.commit();
 
         } catch (HibernateException e) {
+            if (tr != null) {
+                tr.rollback();
+            }
             System.err.println("FindById is failed");
             System.err.println(e.getMessage());
         } finally {
@@ -85,14 +102,19 @@ public class ProductDao {
     public static List<Product> findByPrice(int price, int delta) {
         Session session = null;
         List<Product> products = null;
+        Transaction tr = null;
         try {
             session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
             Query query = session.createQuery("from Product where price between :priceMin and :priceMax");
             query.setParameter("priceMin", price - delta);
             query.setParameter("priceMax", price + delta);
             products = query.list();
+            tr.commit();
 
         } catch (HibernateException e) {
+            tr.rollback();
             System.err.println("FindById is failed");
             System.err.println(e.getMessage());
         } finally {
@@ -106,14 +128,20 @@ public class ProductDao {
     public static List<Product> findByNameSortedAsc(String name) {
         Session session = null;
         List<Product> products = null;
+        Transaction tr = null;
         try {
             session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
             Query query = session.createQuery("from Product where name = :code order by name asc");
             query.setParameter("code", name);
 
             products = query.list();
 
+            tr.commit();
+
         } catch (HibernateException e) {
+            tr.rollback();
             System.err.println("FindById is failed");
             System.err.println(e.getMessage());
         } finally {
@@ -127,13 +155,19 @@ public class ProductDao {
     public static List<Product> findByNameSortedDesc() {
         Session session = null;
         List<Product> products = null;
+        Transaction tr = null;
         try {
             session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
             Query query = session.createQuery("from Product order by name desc");
 
             products = query.list();
 
+            tr.commit();
+
         } catch (HibernateException e) {
+            tr.rollback();
             System.err.println("FindById is failed");
             System.err.println(e.getMessage());
         } finally {
@@ -148,14 +182,19 @@ public class ProductDao {
     public static List<Product> findByPriceSortedDesc(int price, int delta) {
         Session session = null;
         List<Product> products = null;
+        Transaction tr = null;
         try {
             session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
             Query query = session.createQuery("from Product where price between :priceMin and :priceMax order by price desc");
             query.setParameter("priceMin", price - delta);
             query.setParameter("priceMax", price + delta);
             products = query.list();
+            tr.commit();
 
         } catch (HibernateException e) {
+            tr.rollback();
             System.err.println("FindById is failed");
             System.err.println(e.getMessage());
         } finally {
@@ -165,4 +204,6 @@ public class ProductDao {
         }
         return products;
     }
+
+
 }

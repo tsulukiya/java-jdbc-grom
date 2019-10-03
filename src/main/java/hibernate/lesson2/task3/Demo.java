@@ -3,6 +3,7 @@ package hibernate.lesson2.task3;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class Demo {
 
     public static void main(String[] args) {
@@ -31,7 +32,10 @@ public class Demo {
 
         List<Product> products = Arrays.asList(product1, product2, product3);
 
-        //System.out.println(findById(3));
+        ProductDao productDao = new ProductDao();
+        System.out.println(productDao.findById(3).toString());
+
+
         //System.out.println(findByName("test"));
         //System.out.println(findByContainedName("oy"));
         //System.out.println(findByPrice(100, 20));

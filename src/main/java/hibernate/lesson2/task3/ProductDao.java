@@ -1,9 +1,9 @@
 package hibernate.lesson2.task3;
 
 import org.hibernate.HibernateException;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
@@ -13,26 +13,6 @@ public class ProductDao {
 
     private static SessionFactory sessionFactory;
 
-    public static void save(Product product) {
-        Session session = null;
-        Transaction tr = null;
-        try {
-            session = createSessionFactory().openSession();
-            tr = session.getTransaction();
-            tr.begin();
-            session.save(product);
-            tr.commit();
-        } catch (HibernateException e) {
-            System.err.println("Save is failed");
-            System.err.println(e.getMessage());
-            if (tr != null)
-                tr.rollback();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
 
     public static SessionFactory createSessionFactory() {
         if (sessionFactory == null) {
@@ -41,12 +21,12 @@ public class ProductDao {
         return sessionFactory;
     }
 
-    public static List<Product> findById(long id) {
+    public List<Product> findById(long id) {
         Session session = null;
         List<Product> products = null;
         try {
             session = createSessionFactory().openSession();
-            Query query = session.createQuery("from Product where id = :code");
+            Query query = session.createSQLQuery("SELECT * FROM PRODUCT WHERE ID = :code");
             query.setParameter("code", id);
             products = query.list();
 
@@ -61,7 +41,7 @@ public class ProductDao {
         return products;
     }
 
-    public static List<Product> findByName(String name) {
+    public List<Product> findByName(String name) {
         Session session = null;
         List<Product> products = null;
         try {
@@ -81,7 +61,7 @@ public class ProductDao {
         return products;
     }
 
-    public static List<Product> findByContainedName(String name) {
+    public List<Product> findByContainedName(String name) {
         Session session = null;
         List<Product> products = null;
         try {
@@ -101,7 +81,7 @@ public class ProductDao {
         return products;
     }
 
-    public static List<Product> findByPrice(int price, int delta) {
+    public List<Product> findByPrice(int price, int delta) {
         Session session = null;
         List<Product> products = null;
         try {
@@ -122,7 +102,7 @@ public class ProductDao {
         return products;
     }
 
-    public static List<Product> findByNameSortedAsc(String name) {
+    public List<Product> findByNameSortedAsc(String name) {
         Session session = null;
         List<Product> products = null;
         try {
@@ -143,7 +123,7 @@ public class ProductDao {
         return products;
     }
 
-    public static List<Product> findByNameSortedDesc() {
+    public List<Product> findByNameSortedDesc() {
         Session session = null;
         List<Product> products = null;
         try {
@@ -164,7 +144,7 @@ public class ProductDao {
 
     }
 
-    public static List<Product> findByPriceSortedDesc(int price, int delta) {
+    public List<Product> findByPriceSortedDesc(int price, int delta) {
         Session session = null;
         List<Product> products = null;
         try {
