@@ -33,15 +33,13 @@ public class Demo {
         List<Product> products = Arrays.asList(product1, product2, product3);
 
         ProductDao productDao = new ProductDao();
-        System.out.println(productDao.findById(3).toString());
-
-
-        //System.out.println(findByName("test"));
-        //System.out.println(findByContainedName("oy"));
-        //System.out.println(findByPrice(100, 20));
-        //System.out.println(findByNameSortedAsc("table"));
-        //System.out.println(findByNameSortedDesc());
-        //System.out.println(findByPriceSortedDesc(100, 20));
+        //System.out.println(productDao.findById(3));
+        //System.out.println(productDao.findByName("test"));
+        //System.out.println(productDao.findByContainedName("oy"));
+        //System.out.println(productDao.findByPrice(100, 20));
+        //System.out.println(productDao.findByNameSortedAsc("table"));
+        //System.out.println(productDao.findByNameSortedDesc("table"));
+        //System.out.println(productDao.findByPriceSortedDesc(100, 20));
 
     }
 }
