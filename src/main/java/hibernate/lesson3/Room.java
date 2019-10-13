@@ -1,9 +1,5 @@
 package hibernate.lesson3;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.LazyCollection;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -96,7 +92,7 @@ public class Room {
     public void setDateAvailableFrom(Date dateAvailableFrom) {
         this.dateAvailableFrom = dateAvailableFrom;
     }
-    
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "HOTEL")
     public Hotel getHotel() {
