@@ -59,7 +59,7 @@ public class RoomRepository {
             query.setParameter("code1", filter.getPrice());
             query.setParameter("code2", filter.getBreakfastIncluded());
             query.setParameter("code3", filter.getPetsAllowed());
-            query.setParameter("code3", simpleDateFormat.format(filter.getDateAvailableFrom()));
+            query.setParameter("code3", filter.getDateAvailableFrom());
 
             for (Object o : query.list()) {
                 roomList.add((Room) o);
