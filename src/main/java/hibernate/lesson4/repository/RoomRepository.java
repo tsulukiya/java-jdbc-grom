@@ -23,7 +23,7 @@ public class RoomRepository {
     private static String sqlRoomFindById = "from Room where id = :code";
     private static String sqlRoomFindByFilter = "from Room where numberOfGuests = :code " +
             "and price =:code1 and inBreakfastIncluded =:code2 and petsAllowed =:code3" +
-            "and DATE_AVAILABLE_FROM <=:code4";
+            "and dateAvailableFrom <=:code4";
 
     public Room save(Room room) {
         room.setHotel(hotelRepository.findById(room.getHotel().getId()));
@@ -51,7 +51,6 @@ public class RoomRepository {
             session = createSessionFactory().openSession();
             tr = session.getTransaction();
             tr.begin();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
             Query query = session.createQuery(sqlRoomFindByFilter);
 
@@ -59,7 +58,7 @@ public class RoomRepository {
             query.setParameter("code1", filter.getPrice());
             query.setParameter("code2", filter.getBreakfastIncluded());
             query.setParameter("code3", filter.getPetsAllowed());
-            query.setParameter("code3", filter.getDateAvailableFrom());
+            query.setParameter("code4", filter.getDateAvailableFrom());
 
             for (Object o : query.list()) {
                 roomList.add((Room) o);
