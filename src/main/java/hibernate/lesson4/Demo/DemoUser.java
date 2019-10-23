@@ -16,7 +16,8 @@ public class DemoUser {
 //        userController.save(user);
 //        userController.update(user);
 //        System.out.println(userController.findById(14));
-        userController.delete(149);
+//        userController.delete(149);
+//        userController.registerUser(user);
 
 
 

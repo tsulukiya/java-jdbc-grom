@@ -23,4 +23,16 @@ public class UserController {
         return userService.findById(id);
     }
 
+    public User registerUser(User user) {
+        return userService.registerUser(user);
+    }
+
+    public void login(String userName, String password) {
+        userService.login(userName, password);
+    }
+
+    public void logout() {
+        userService.logout();
+    }
+
 }

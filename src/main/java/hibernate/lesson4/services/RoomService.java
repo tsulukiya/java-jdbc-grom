@@ -31,4 +31,13 @@ public class RoomService {
         return roomRepository.findRooms(filter);
     }
 
+    public void bookRoom(long roomId, long userId, Date dateFrom, Date dateTo) {
+        roomRepository.bookRoom(roomId, userId, dateFrom,dateTo);
+    }
+
+    public void cancelReservation(long roomId, long userId) {
+        roomRepository.cancelReservation(roomId, userId);
+    }
+
+
 }

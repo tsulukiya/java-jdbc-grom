@@ -33,4 +33,12 @@ public class RoomController {
         return roomService.findRooms(filter);
     }
 
+    public void bookRoom(long roomId, long userId, Date dateFrom, Date dateTo) {
+        roomService.bookRoom(roomId, userId, dateFrom,dateTo);
+    }
+
+    public void cancelReservation(long roomId, long userId) {
+        roomService.cancelReservation(roomId, userId);
+    }
+
 }

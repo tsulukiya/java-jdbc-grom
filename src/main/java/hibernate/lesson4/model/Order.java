@@ -25,6 +25,13 @@ public class Order {
         this.moneyPaid = moneyPaid;
     }
 
+    public Order(User userOrdered, Room room, Date dateFrom, Date dateTo) {
+        this.userOrdered = userOrdered;
+        this.room = room;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+    }
+
     public Order(User userOrdered, Room room, Date dateFrom, Date dateTo, double moneyPaid) {
         this.userOrdered = userOrdered;
         this.room = room;

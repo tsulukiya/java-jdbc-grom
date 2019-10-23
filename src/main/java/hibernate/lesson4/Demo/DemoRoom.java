@@ -5,14 +5,8 @@ import hibernate.lesson4.controller.RoomController;
 import hibernate.lesson4.model.Filter;
 import hibernate.lesson4.model.Hotel;
 import hibernate.lesson4.model.Room;
-
-import javax.security.auth.login.LoginException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
 
 public class DemoRoom {
 
@@ -27,14 +21,16 @@ public class DemoRoom {
         Filter filter = new Filter(2,200.00,0,1,new Date(),
                 "Ukraine", "Kiev");
 
-        Filter filter1 = new Filter(4,200.00,1,0,new Date(),
+        Filter filter1 = new Filter(1,1900.00,0,0,new Date(),
                 "Ukraine", "Kiev");
 
         RoomController roomController = new RoomController();
         //roomController.save(room2);
         //roomController.update(room1);
         //roomController.delete(309);
+        //roomController.bookRoom(361, 151, new Date(), new Date());
+        //roomController.cancelReservation(361, 151);
 
-        System.out.println(roomController.findRooms(filter1));
+        //System.out.println(roomController.findRooms(filter));
     }
 }
