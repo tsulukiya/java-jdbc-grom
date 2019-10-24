@@ -31,6 +31,6 @@ public class DemoRoom {
         //roomController.bookRoom(361, 151, new Date(), new Date());
         //roomController.cancelReservation(361, 151);
 
-        //System.out.println(roomController.findRooms(filter));
+        System.out.println(roomController.findRooms(filter));
     }
 }
